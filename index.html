@@ -204,7 +204,30 @@
     flex-shrink: 0;
   }
 
-  /* ── FOOTER ── */
+  .sc-frame {
+    width: 100%;
+    height: 450px;
+    border-radius: 16px;
+    border: 1px solid rgba(201,169,110,0.15);
+    background: #000;
+    display: block;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,169,110,0.05);
+    margin-bottom: 20px;
+  }
+
+  .yt-section {
+    margin-top: 36px;
+  }
+
+  .yt-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--violet-soft);
+    opacity: 0.5;
+    margin-bottom: 14px;
+    text-align: center;
+  }
   footer {
     text-align: center;
     padding-top: 64px;
@@ -259,12 +282,15 @@
   <div class="divider"><span class="divider-star">✦</span></div>
 
   <div class="player-wrap">
-    <div class="player-label">✦ now playing your stories ✦</div>
+
+    <!-- SoundCloud — Primary -->
+    <div class="player-label">✦ listen here ✦</div>
     <iframe
-      class="youtube-frame"
-      src="https://www.youtube.com/embed/videoseries?list=PLbqDjB5rwKZz3huQ6Z9-YoGph7ej-lqXu&autoplay=0&rel=0&modestbranding=1"
-      allowfullscreen
-      allow="autoplay; encrypted-media"
+      class="sc-frame"
+      scrolling="no"
+      frameborder="no"
+      allow="autoplay"
+      src="https://w.soundcloud.com/player/?url=https%3A//on.soundcloud.com/LzJunjr5Us62RCuu2y&color=%23c9a96e&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"
     ></iframe>
 
     <div class="story-list">
@@ -284,6 +310,18 @@
         <div class="story-dot"></div>
       </div>
     </div>
+
+    <!-- YouTube — Secondary -->
+    <div class="yt-section">
+      <div class="yt-label">✦ or watch on youtube ✦</div>
+      <iframe
+        class="youtube-frame"
+        src="https://www.youtube.com/embed/videoseries?list=PLbqDjB5rwKZz3huQ6Z9-YoGph7ej-lqXu&autoplay=0&rel=0&modestbranding=1"
+        allowfullscreen
+        allow="autoplay; encrypted-media"
+      ></iframe>
+    </div>
+
   </div>
 
   <footer>
@@ -335,36 +373,6 @@
   window.addEventListener('resize', () => { resize(); initStars(); });
   resize(); initStars();
   requestAnimationFrame(drawStars);
-</script> [];
-    const count = Math.floor((canvas.width * canvas.height) / 3000);
-    for (let i = 0; i < count; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.2 + 0.2,
-        alpha: Math.random() * 0.7 + 0.1,
-        speed: Math.random() * 0.008 + 0.002,
-        phase: Math.random() * Math.PI * 2,
-      });
-    }
-  }
-
-  function drawStars(t) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const s of stars) {
-      const a = s.alpha * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(232, 228, 240, ${a})`;
-      ctx.fill();
-    }
-    requestAnimationFrame(drawStars);
-  }
-
-  window.addEventListener('resize', () => { resize(); initStars(); });
-  resize(); initStars();
-  requestAnimationFrame(drawStars);
-
 </script>
 </body>
 </html>
