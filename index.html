@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bedtime Stories for Shruti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Crimson+Pro:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --midnight: #050810;
+    --deep-navy: #080d1a;
+    --ink: #0d1530;
+    --moonlight: #e8e4f0;
+    --silver: #b8b4cc;
+    --gold: #c9a96e;
+    --gold-soft: #e2c98a;
+    --violet: #6b5b9e;
+    --violet-soft: #9b8bbf;
+    --glow: rgba(201, 169, 110, 0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--midnight);
+    color: var(--moonlight);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── STAR CANVAS ── */
+  #stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── AURORA GLOW ── */
+  .aurora {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 40% at 20% 10%, rgba(107, 91, 158, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 30% at 80% 5%, rgba(201, 169, 110, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 50% at 50% 100%, rgba(8, 13, 26, 0.9) 0%, transparent 70%);
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 72px 0 56px;
+    animation: fadeDown 1.2s ease both;
+  }
+
+  .moon {
+    display: inline-block;
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    animation: moonFloat 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px rgba(201,169,110,0.5));
+  }
+
+  @keyframes moonFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .for-label {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: lowercase;
+    margin-bottom: 10px;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-size: clamp(2.6rem, 8vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--moonlight);
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-soft);
+  }
+
+  .subtitle {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--silver);
+    opacity: 0.7;
+    letter-spacing: 0.04em;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0;
+    opacity: 0.3;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .divider-star { color: var(--gold); font-size: 0.7rem; }
+
+  /* ── PLAYLIST PLAYER ── */
+  .player-wrap {
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .player-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--violet-soft);
+    opacity: 0.8;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .youtube-frame {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 16px;
+    border: 1px solid rgba(201,169,110,0.15);
+    background: #000;
+    display: block;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,169,110,0.05);
+  }
+
+  .story-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .story-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(13,21,48,0.95) 0%, rgba(8,13,26,0.98) 100%);
+    border: 1px solid rgba(201,169,110,0.08);
+    border-radius: 12px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .story-item:nth-child(1) { animation-delay: 0.3s; }
+  .story-item:nth-child(2) { animation-delay: 0.45s; }
+  .story-item:nth-child(3) { animation-delay: 0.6s; }
+
+  .story-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.35;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .story-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--moonlight);
+    opacity: 0.85;
+  }
+
+  .story-dot {
+    margin-left: auto;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.25;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding-top: 64px;
+    animation: fadeUp 1s 0.9s ease both;
+  }
+
+  .footer-message {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--silver);
+    opacity: 0.5;
+    line-height: 1.7;
+  }
+
+  .footer-heart {
+    font-size: 1.1rem;
+    display: block;
+    margin-top: 10px;
+    opacity: 0.4;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--midnight); }
+  ::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="aurora"></div>
+
+<div class="page">
+  <header>
+    <div class="moon">🌙</div>
+    <div class="for-label">a little something for my love</div>
+    <h1>Stories that will<br>put you to <em>sleep</em></h1>
+    <p class="subtitle">close your eyes & let me tell you a story</p>
+  </header>
+
+  <div class="divider"><span class="divider-star">✦</span></div>
+
+  <div class="player-wrap">
+    <div class="player-label">✦ now playing your stories ✦</div>
+    <iframe
+      class="youtube-frame"
+      src="https://www.youtube.com/embed/videoseries?list=PLbqDjB5rwKZz3huQ6Z9-YoGph7ej-lqXu&autoplay=0&rel=0&modestbranding=1"
+      allowfullscreen
+      allow="autoplay; encrypted-media"
+    ></iframe>
+
+    <div class="story-list">
+      <div class="story-item">
+        <div class="story-num">01</div>
+        <div class="story-name">The Girl on the Train</div>
+        <div class="story-dot"></div>
+      </div>
+      <div class="story-item">
+        <div class="story-num">02</div>
+        <div class="story-name">The Cherry Tree</div>
+        <div class="story-dot"></div>
+      </div>
+      <div class="story-item">
+        <div class="story-num">03</div>
+        <div class="story-name">The Postman's Bicycle</div>
+        <div class="story-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p class="footer-message">
+      recorded just for you.<br>
+      whenever I sleep early and you need to hear my voice.
+    </p>
+    <span class="footer-heart">♡</span>
+  </footer>
+</div>
+
+<script>
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 3000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        alpha: Math.random() * 0.7 + 0.1,
+        speed: Math.random() * 0.008 + 0.002,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      const a = s.alpha * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232, 228, 240, ${a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', () => { resize(); initStars(); });
+  resize(); initStars();
+  requestAnimationFrame(drawStars);
+</script> [];
+    const count = Math.floor((canvas.width * canvas.height) / 3000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        alpha: Math.random() * 0.7 + 0.1,
+        speed: Math.random() * 0.008 + 0.002,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      const a = s.alpha * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232, 228, 240, ${a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', () => { resize(); initStars(); });
+  resize(); initStars();
+  requestAnimationFrame(drawStars);
+
+</script>
+</body>
+</html>
